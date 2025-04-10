@@ -1,0 +1,83 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Ký - Hotel Family</title>
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+  <div class="auth-container">
+    <form class="auth-form" id="register-form">
+      <h2>Đăng Ký</h2>
+      <input type="text" id="reg-username" placeholder="Tài khoản" required>
+      <input type="password" id="reg-password" placeholder="Mật khẩu" required>
+      <input type="text" id="reg-fullname" placeholder="Họ và tên" required>
+      <input type="date" id="reg-dob" placeholder="Ngày sinh" required>
+      <select id="reg-gender" required>
+        <option value="">Chọn giới tính</option>
+        <option value="Nam">Nam</option>
+        <option value="Nữ">Nữ</option>
+        <option value="Khác">Khác</option>
+      </select>
+      <input type="text" id="reg-cccd" placeholder="CCCD" required>
+      <input type="tel" id="reg-phone" placeholder="Số điện thoại" required>
+      <input type="text" id="reg-nationality" placeholder="Quốc tịch (Nơi sinh)" required>
+      <input type="email" id="reg-email" placeholder="Email" required>
+      <button type="submit">Đăng Ký</button>
+      <p>Đã có tài khoản? <a href="login.html">Đăng nhập</a></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('register-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Lấy dữ liệu từ form
+      let username     = document.getElementById('reg-username').value;
+      let password     = document.getElementById('reg-password').value;
+      let fullname     = document.getElementById('reg-fullname').value;
+      let dob          = document.getElementById('reg-dob').value;
+      let gender       = document.getElementById('reg-gender').value;
+      let cccd         = document.getElementById('reg-cccd').value;
+      let phone        = document.getElementById('reg-phone').value;
+      let nationality  = document.getElementById('reg-nationality').value;
+      let email        = document.getElementById('reg-email').value;
+
+      // Tạo đối tượng người dùng mới
+      let newUser = {
+        username: username,
+        password: password, // Lưu ý: trong thực tế, không nên lưu mật khẩu dưới dạng plain text!
+        fullname: fullname,
+        dob: dob,
+        gender: gender,
+        cccd: cccd,
+        phone: phone,
+        nationality: nationality,
+        email: email
+      };
+
+      // Lấy danh sách người dùng hiện có từ localStorage (nếu có)
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+
+      // Kiểm tra xem tài khoản đã tồn tại hay chưa
+      let exists = users.some(user => user.username === username);
+      if (exists) {
+        alert('Tài khoản này đã tồn tại!');
+        return;
+      }
+
+      // Thêm người dùng mới vào mảng
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+
+      // Lưu thông tin người dùng hiện tại (đã đăng nhập) vào key "currentUser"
+      localStorage.setItem('currentUser', JSON.stringify(newUser));
+
+      // Chuyển hướng về trang chủ
+      window.location.href = '../trangchu/index.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phòng - Hotel Family</title>
+  <link rel="stylesheet" href="pages.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-yHfhJ0f2QG3qQOGvTZ8Kw+6SbK4lriM6QaiN3jsB+mUlP8HMe9uSVSGwNcw6rh/sK5+aOq48mS5XUkdA6U6Cyg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+
+  <style>
+    /* CSS cho modal đặt phòng (như cũ) */
+    .modal {
+      display: none; /* Ẩn mặc định */
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+      animation: fadeIn 0.5s;
+    }
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #555;
+      cursor: pointer;
+    }
+    .modal-content h3 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .booking-form-modal input,
+    .booking-form-modal textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    .booking-form-modal button {
+      width: 100%;
+      padding: 12px;
+      background-color: #0d6efd;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .booking-form-modal button:hover {
+      background-color: #084298;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    /* nút lịch sử*/
+    #bookingHistoryBtn {
+  position: fixed;     
+  bottom: 20px;        
+  right: 20px;         
+  background-color: #4facfe;
+  color: #fff;
+  border: none;
+  border-radius: 50%;  
+  padding: 15px;       
+  font-size: 24px;     
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, background-color 0.3s;
+  z-index: 1000;
+}
+
+#bookingHistoryBtn:hover {
+  transform: scale(1.1);
+  background-color: #43e97b;
+}
+
+  /* Modal lịch sử đặt */
+#bookingHistoryModal {
+  display: none; /* Ẩn mặc định */
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+#bookingHistoryModal .modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+  animation: fadeIn 0.5s;
+}
+
+#bookingHistoryModal .modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+}
+
+    /* CSS cho form tìm kiếm phòng */
+    .room-search-form {
+      width: 70%;
+      max-width: 700px;
+      margin: 30px auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .room-search-form input,
+    .room-search-form button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .room-search-form input {
+      flex: 1;
+      min-width: 150px;
+    }
+    .room-search-form button {
+      background-color: #ffc107;
+      color: #000;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .room-search-form button:hover {
+      background-color: #e0a800;
+    }
+    
+    /* CSS cho card phòng */
+    .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 100px;
+    padding: 20px;
+    margin: auto;
+    max-width: 1200px;
+  }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .card-info {
+      padding: 15px;
+    }
+    .card-info h4 {
+      margin-bottom: 5px;
+      font-size: 18px;
+    }
+    .card-info h5 {
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+    .card-info p.idgia {
+      margin-bottom: 10px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .book-btn {
+      padding: 10px 20px;
+      background-color: #0d6efd;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .book-btn:hover {
+      background-color: #084298;
+    }
+    /* CSS cho trạng thái phòng */
+.card[data-status="available"] .status-text {
+  color: green;
+  font-weight: bold;
+}
+
+.card[data-status="booked"] .status-text {
+  color: orange;
+  font-weight: bold;
+}
+
+.card[data-status="occupied"] .status-text {
+  color: red;
+  font-weight: bold;
+}
+  </style>
+</head>
+<body>
+  <!-- Header (giữ nguyên phần header chung) -->
+  <header class="header">
+    <div class="container">
+      <div class="logo"><a href="../trangchu/index.html">Hotel Family</a></div>
+      <nav class="nav">
+        <ul class="nav-links">
+          <li><a href="../page/phong.html" class="active">Phòng</a></li>
+          <li><a href="dichvu.html">Dịch vụ</a></li>
+          <li><a href="../page/khuyenmai.html">Khuyến Mãi</a></li>
+          <li><a href="../page/hotro.html">Hỗ Trợ</a></li>
+        </ul>
+      </nav>
+      <div class="auth-buttons">
+         <a href="../accounts/login.html">Đăng nhập</a> <a href="../accounts/register.html">Đăng ký</a>
+      </div>
+      <!-- Thêm nút lịch sử đặt -->
+      <button id="bookingHistoryBtn" title="Lịch sử đặt"> 
+        <i class="fa-solid fa-history">Lịch sử đặt</i>
+      </button>
+      
+      
+    </div>
+  </header>
+
+  <!-- Hero Section nhỏ cho trang Phòng -->
+  <section class="hero-small" style="background: url('https://i.pinimg.com/736x/82/12/9d/82129df28eab198930dd2111a92e1073.jpg') no-repeat center center/cover;">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h2>Khám phá phòng nghỉ đẳng cấp</h2>
+      <p>Trải nghiệm không gian nghỉ dưỡng sang trọng cùng tiện nghi hiện đại</p>
+    </div>
+  </section>
+
+  <!-- Form tìm kiếm phòng -->
+  <form class="room-search-form" id="roomSearchForm">
+    <input type="text" id="roomTypeInput" placeholder="Loại phòng">
+    <input type="date" id="checkinInput" placeholder="Nhận phòng">
+    <input type="date" id="checkoutInput" placeholder="Trả phòng">
+    <input type="number" id="guestsInput" placeholder="Số khách" min="1">
+    <button type="submit">Tìm kiếm</button>
+  </form>
+
+  <!-- Danh sách các loại phòng -->
+  <main class="content">
+    <section class="cards-section">
+      <h3>Các loại phòng</h3>
+      <div class="card-grid" id="roomCardsContainer">
+        <!-- Card Phòng View nhìn ra sông hàn (với data-maxguests) -->
+        <div class="card" data-maxguests="5">
+          <img src="https://cdn-www.vinid.net/186cf1c7-khach-san-song-han-da-nang-1.jpg" alt="Phòng Deluxe">
+          <div class="card-info">
+            <h4>Phòng view nhìn ra sông hàn</h4>
+            <h5>Số người tối đa: 5</h5>
+            <p class="idgia">Giá : 3.000.000VNĐ</p>
+            <p class="status">Tình trạng: <span class="status-text">Còn trống</span></p>
+            <button class="book-btn" data-room="Phòng View nhìn ra sông hàn">Đặt phòng</button>
+          </div>
+        </div>
+        <!-- Card Phòng Suite -->
+        <div class="card" data-maxguests="4">
+          <img src="https://source.unsplash.com/400x300/?luxury,room" alt="Phòng Suite">
+          <div class="card-info">
+            <h4>Phòng Suite</h4>
+            <h5>Số người tối đa: 4</h5>
+            <p class="idgia">Giá : 4.500.000VNĐ</p>
+            <p class="status">Tình trạng: <span class="status-text">Còn trống</span></p>
+            <button class="book-btn" data-room="Phòng Suite">Đặt phòng</button>
+          </div>
+        </div>
+        <!-- Card Phòng Standard -->
+        <div class="card" data-maxguests="3">
+          <img src="https://source.unsplash.com/400x300/?hotel,lobby" alt="Phòng Standard">
+          <div class="card-info">
+            <h4>Phòng Standard</h4>
+            <h5>Số người tối đa: 3</h5>
+            <p class="idgia">Giá : 2.500.000VNĐ</p>
+            <p class="status">Tình trạng: <span class="status-text">Còn trống</span></p>
+            <button class="book-btn" data-room="Phòng Standard">Đặt phòng</button>
+          </div>
+        </div>
+        <div class="card" data-maxguests="4">
+          <img src="https://source.unsplash.com/400x300/?luxury,room" alt="Phòng Suite">
+          <div class="card-info">
+            <h4>Phòng Suite</h4>
+            <h5>Số người tối đa: 4</h5>
+            <p class="idgia">Giá : 4.500.000VNĐ</p>
+            <p class="status">Tình trạng: <span class="status-text">Còn trống</span></p>
+            <button class="book-btn" data-room="Phòng Suite">Đặt phòng</button>
+          </div>
+        </div>
+        <div class="card" data-maxguests="4">
+          <img src="https://source.unsplash.com/400x300/?luxury,room" alt="Phòng Suite">
+          <div class="card-info">
+            <h4>Phòng Suite</h4>
+            <h5>Số người tối đa: 4</h5>
+            <p class="idgia">Giá : 4.500.000VNĐ</p>
+            <p class="status">Tình trạng: <span class="status-text">Còn trống</span></p>
+            <button class="book-btn" data-room="Phòng Suite">Đặt phòng</button>
+          </div>
+        </div>
+        <div class="card" data-maxguests="4">
+          <img src="https://source.unsplash.com/400x300/?luxury,room" alt="Phòng Suite">
+          <div class="card-info">
+            <h4>Phòng Suite</h4>
+            <h5>Số người tối đa: 4</h5>
+            <p class="idgia">Giá : 4.500.000VNĐ</p>
+            <p class="status">Tình trạng: <span class="status-text">Còn trống</span></p>
+            <button class="book-btn" data-room="Phòng Suite">Đặt phòng</button>
+          </div>
+        </div>
+        <div class="card" data-maxguests="4">
+          <img src="https://source.unsplash.com/400x300/?luxury,room" alt="Phòng Suite">
+          <div class="card-info">
+            <h4>Phòng Suite</h4>
+            <h5>Số người tối đa: 4</h5>
+            <p class="idgia">Giá : 4.500.000VNĐ</p>
+            <p class="status">Tình trạng: <span class="status-text">Còn trống</span></p>
+            <button class="book-btn" data-room="Phòng Suite">Đặt phòng</button>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+  </main>
+
+  <!-- Modal đặt phòng (giữ nguyên modal cũ) -->
+  <div id="bookingModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <h3>Đặt Phòng: <span id="modal-room-name"></span></h3>
+      <form class="booking-form-modal" id="booking-form-modal">
+        <input type="date" id="checkin" required placeholder="Ngày nhận phòng">
+        <input type="date" id="checkout" required placeholder="Ngày trả phòng">
+        <input type="number" id="guests" placeholder="Số khách" required min="1">
+        <input type="text" id="customer-name" placeholder="Họ và tên" required>
+        <input type="tel" id="customer-phone" placeholder="Số điện thoại" required>
+        <input type="email" id="customer-email" placeholder="Email" required>
+        <textarea id="special-request" rows="3" placeholder="Yêu cầu đặc biệt (nếu có)"></textarea>
+        <button type="submit">Xác nhận đặt phòng</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Script xử lý tìm kiếm, đặt phòng, và chuyển hướng nếu chưa đăng nhập -->
+  <script>
+   document.addEventListener("DOMContentLoaded", function () {
+      // Xử lý tìm kiếm phòng
+      document.getElementById("roomSearchForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const roomType = document.getElementById("roomTypeInput").value.toLowerCase();
+        const checkin = document.getElementById("checkinInput").value;
+        const checkout = document.getElementById("checkoutInput").value;
+        const guests = parseInt(document.getElementById("guestsInput").value);
+        const cards = document.querySelectorAll("#roomCardsContainer .card");
+        cards.forEach(card => {
+          const title = card.querySelector("h4").textContent.toLowerCase();
+          const maxGuests = parseInt(card.getAttribute("data-maxguests"));
+          const matchesType = roomType ? title.includes(roomType) : true;
+          const matchesGuests = guests ? guests <= maxGuests : true;
+          card.style.display = (matchesType && matchesGuests) ? "" : "none";
+        });
+      });
+
+      // Xử lý hiển thị modal đặt phòng
+      const bookButtons = document.querySelectorAll('.book-btn');
+      const bookingModal = document.getElementById('bookingModal');
+      const modalRoomName = document.getElementById('modal-room-name');
+      const modalClose = bookingModal.querySelector('.modal-close');
+      bookButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          let currentUser = localStorage.getItem("currentUser");
+          if (!currentUser) {
+            alert("Bạn cần đăng nhập để đặt phòng");
+            window.location.href = "../accounts/login.html";
+            return;
+          }
+          const room = this.getAttribute('data-room');
+          modalRoomName.textContent = room;
+          bookingModal.style.display = 'block';
+        });
+      });
+      // Đóng modal đặt phòng khi bấm dấu X
+      modalClose.addEventListener('click', function() {
+        bookingModal.style.display = 'none';
+      });
+      window.addEventListener('click', function(e) {
+        if (e.target === bookingModal) {
+          bookingModal.style.display = 'none';
+        }
+      });
+
+      // Xử lý đặt phòng (lưu vào lịch sử đặt)
+      document.getElementById('booking-form-modal').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const checkin = document.getElementById('checkin').value;
+        const checkout = document.getElementById('checkout').value;
+        const guests = document.getElementById('guests').value;
+        const customerName = document.getElementById('customer-name').value;
+        const customerPhone = document.getElementById('customer-phone').value;
+        const customerEmail = document.getElementById('customer-email').value;
+        const specialRequest = document.getElementById('special-request').value;
+        const roomName = modalRoomName.textContent;
+        const bookingInfo = {
+          roomName, checkin, checkout, guests,
+          customerName, customerPhone, customerEmail, specialRequest
+        };
+        let bookingHistory = JSON.parse(localStorage.getItem("bookingHistory")) || [];
+        bookingHistory.push(bookingInfo);
+        localStorage.setItem("bookingHistory", JSON.stringify(bookingHistory));
+        alert(`Đặt phòng ${roomName} thành công!\nNgày nhận: ${checkin}\nNgày trả: ${checkout}\nSố khách: ${guests}`);
+        bookingModal.style.display = 'none';
+        e.target.reset();
+      });
+
+      // Xử lý hiển thị modal lịch sử đặt
+      document.getElementById("bookingHistoryBtn").addEventListener("click", function () {
+        let history = JSON.parse(localStorage.getItem("bookingHistory")) || [];
+        const container = document.getElementById("bookingHistoryContent");
+        container.innerHTML = "";
+        if (history.length === 0) {
+          container.innerHTML = "<p>Bạn chưa có lịch sử đặt phòng nào.</p>";
+        } else {
+          history.forEach((booking, index) => {
+            const bookingDiv = document.createElement("div");
+            bookingDiv.style.border = "1px solid #ccc";
+            bookingDiv.style.padding = "10px";
+            bookingDiv.style.marginBottom = "10px";
+            bookingDiv.style.borderRadius = "5px";
+            bookingDiv.innerHTML = `
+              <p><strong>${index + 1}. Phòng:</strong> ${booking.roomName}</p>
+              <p><strong>Ngày nhận:</strong> ${booking.checkin}</p>
+              <p><strong>Ngày trả:</strong> ${booking.checkout}</p>
+              <p><strong>Số khách:</strong> ${booking.guests}</p>
+              <p><strong>Tên:</strong> ${booking.customerName}</p>
+              <p><strong>SĐT:</strong> ${booking.customerPhone}</p>
+              <p><strong>Email:</strong> ${booking.customerEmail}</p>
+              <p><strong>Yêu cầu:</strong> ${booking.specialRequest}</p>
+            `;
+            container.appendChild(bookingDiv);
+          });
+        }
+        document.getElementById("bookingHistoryModal").style.display = "block";
+      });
+      // Đóng modal lịch sử đặt khi bấm dấu "x" hoặc click bên ngoài
+      document.getElementById("bookingHistoryClose").addEventListener("click", function () {
+        document.getElementById("bookingHistoryModal").style.display = "none";
+      });
+      window.addEventListener("click", function (e) {
+        const modalHistory = document.getElementById("bookingHistoryModal");
+        if (e.target === modalHistory) {
+          modalHistory.style.display = "none";
+        }
+      });
+    });
+   // xóa lịch sử đặt phòng do test quá nhiều 
+   //localStorage.removeItem("bookingHistory");
+  </script>
+  <script src="../auth.js"></script>
+  <!-- Modal Lịch Sử Đặt Phòng -->
+<div id="bookingHistoryModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close" id="bookingHistoryClose">&times;</span>
+    <h3>Lịch sử đặt phòng</h3>
+    <div id="bookingHistoryContent">
+      <!-- Nội dung lịch sử đặt sẽ được chèn vào đây -->
+    </div>
+  </div>
+</div>
+
+</body>
+
+</html>

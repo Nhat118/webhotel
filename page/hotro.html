@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Hỗ Trợ - Hotel Family</title>
+   <link rel="stylesheet" href="pages.css">
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="header">
+   <div class="container">
+      <div class="logo"><a href="../trangchu/index.html">Hotel Family</a></div>
+      <nav class="nav">
+         <ul class="nav-links">
+            <li><a href="phong.html">Phòng</a></li>
+            <li><a href="dichvu.html">Dịch vụ</a></li>
+            <li><a href="khuyenmai.html">Khuyến Mãi</a></li>
+            <li><a href="hotro.html" class="active">Hỗ Trợ</a></li>
+         </ul>
+      </nav>
+      <div class="auth-buttons">
+         <a href="../accounts/login.html">Đăng nhập</a> <a href="../accounts/register.html">Đăng ký</a>
+         <span id="userNameDisplay" style="display: none; font-weight: bold;"></span>
+      </div>
+   </div>
+</header>
+
+<section class="hero-small" style="background: url('https://source.unsplash.com/1600x600/?support,help') no-repeat center center/cover;">
+   <div class="hero-overlay"></div>
+   <div class="hero-content">
+      <h2>Hỗ Trợ Khách Hàng</h2>
+      <p>Chúng tôi luôn sẵn sàng trợ giúp bạn 24/7</p>
+   </div>
+</section>
+
+<main class="content">
+   <section class="support-section">
+      <h3>Gửi yêu cầu hỗ trợ</h3>
+      <form id="support-form">
+         <input type="text" id="support-name" placeholder="Họ và tên" required>
+         <input type="email" id="support-email" placeholder="Email" required>
+         <textarea id="support-message" rows="5" placeholder="Nội dung cần hỗ trợ" required></textarea>
+         <button type="submit">Gửi yêu cầu</button>
+      </form>
+   </section>
+   <section class="faq-section">
+      <h3>Các câu hỏi thường gặp</h3>
+      <div class="faq">
+         <h4>Q: Làm thế nào để đặt phòng?</h4>
+         <p>A: Bạn có thể đặt phòng trực tuyến trên website hoặc liên hệ với chúng tôi qua hotline.</p>
+      </div>
+      <div class="faq">
+         <h4>Q: Tôi có thể hủy đặt phòng được không?</h4>
+         <p>A: Có, bạn có thể hủy đặt phòng hoặc chuyển khi liên hệ với chúng tôi qua hotline</p>
+      </div>
+      <!-- Thêm các câu hỏi khác nếu cần -->
+   </section>
+</main>
+
+<footer class="footer">
+   <div class="container">
+      <p>&copy; 2025 Hotel Family.Hotline : 0123456789</p>
+   </div>
+</footer>
+
+<script >
+   document.getElementById('support-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Yêu cầu của bạn đã được gửi. Chúng tôi sẽ liên hệ lại sớm nhất.');
+      document.getElementById('support-form').reset();
+   });
+</script>
+<script src="../auth.js"></script>
+</body>
+</html>

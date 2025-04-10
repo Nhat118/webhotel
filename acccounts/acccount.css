@@ -1,0 +1,80 @@
+/* account.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  body {
+    background-color: #f8f9fa;
+    color: #333;
+  }
+  
+  /* Header */
+  .header {
+    background-color: #0d6efd;
+    padding: 15px 0;
+    color: white;
+  }
+  
+  .container {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .logo a {
+    color: white;
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: 700;
+  }
+  
+  /* Account Container */
+  .account-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  
+  .account-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 28px;
+  }
+  
+  .account-details p {
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  
+  .account-details strong {
+    display: inline-block;
+    width: 150px;
+  }
+  
+  /* Logout Button */
+  #logout {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  #logout:hover {
+    background-color: #084298;
+  }
+  

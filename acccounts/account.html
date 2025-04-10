@@ -1,0 +1,61 @@
+<!-- account.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thông Tin Tài Khoản - Hotel Family</title>
+  <link rel="stylesheet" href="account.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo"><a href="index.html">Hotel Family</a></div>
+    </div>
+  </header>
+
+  <main class="account-container">
+    <h2>Thông Tin Tài Khoản</h2>
+    <div class="account-details">
+      <p><strong>Tài khoản:</strong> <span id="account-username"></span></p>
+      <p><strong>Họ và tên:</strong> <span id="account-fullname"></span></p>
+      <p><strong>Ngày sinh:</strong> <span id="account-dob"></span></p>
+      <p><strong>Giới tính:</strong> <span id="account-gender"></span></p>
+      <p><strong>CCCD:</strong> <span id="account-cccd"></span></p>
+      <p><strong>SĐT:</strong> <span id="account-phone"></span></p>
+      <p><strong>Quốc tịch (Nơi sinh):</strong> <span id="account-nationality"></span></p>
+      <p><strong>Email:</strong> <span id="account-email"></span></p>
+    </div>
+    <button id="logout">Đăng xuất</button>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let currentUser = localStorage.getItem('currentUser');
+      if (!currentUser) {
+        localStorage.removeItem("currentUser");
+        alert("Bạn đã đăng xuất thành công!");
+        window.location.href = '../trangchu/index.html';
+        return;
+      }
+
+      const user = JSON.parse(currentUser);
+      document.getElementById('account-username').textContent = user.username || '';
+      document.getElementById('account-fullname').textContent = user.fullname || '';
+      document.getElementById('account-dob').textContent = user.dob || '';
+      document.getElementById('account-gender').textContent = user.gender || '';
+      document.getElementById('account-cccd').textContent = user.cccd || '';
+      document.getElementById('account-phone').textContent = user.phone || '';
+      document.getElementById('account-nationality').textContent = user.nationality || '';
+      document.getElementById('account-email').textContent = user.email || '';
+
+      document.getElementById('logout').addEventListener('click', function() {
+        // Xóa thông tin đăng nhập hiện tại
+        localStorage.removeItem('currentUser');
+        window.location.href = '../trangchu/index.html';
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Khuyến Mãi - Hotel Family</title>
+   <link rel="stylesheet" href="pages.css">
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+   <style>
+      /* Slider Styles */
+      .slider {
+         position: relative;
+         max-width: 800px;
+         margin: 40px auto;
+         overflow: hidden;
+         border-radius: 10px;
+         box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      }
+      .slides {
+         display: flex;
+         width: 300%;
+         animation: slide 12s infinite;
+      }
+      .slide {
+         width: 100%;
+         flex-shrink: 0;
+         position: relative;
+      }
+      .slide img {
+         width: 100%;
+         display: block;
+      }
+      .slide .caption {
+         position: absolute;
+         bottom: 20px;
+         left: 20px;
+         background: rgba(0,0,0,0.5);
+         color: #fff;
+         padding: 10px 20px;
+         border-radius: 5px;
+         font-size: 16px;
+      }
+      @keyframes slide {
+         0% { transform: translateX(0); }
+         33% { transform: translateX(0); }
+         44% { transform: translateX(-100%); }
+         77% { transform: translateX(-100%); }
+         88% { transform: translateX(-200%); }
+         100% { transform: translateX(-200%); }
+      }
+   </style>
+</head>
+<body>
+<header class="header">
+   <div class="container">
+      <div class="logo"><a href="../trangchu/index.html">Hotel Family</a></div>
+      <nav class="nav">
+         <ul class="nav-links">
+            <li><a href="../page/phong.html">Phòng</a></li>
+            <li><a href="dichvu.html">Dịch vụ</a></li>
+            <li><a href="../page/khuyenmai.html" class="active">Khuyến Mãi</a></li>
+            <li><a href="../page/hotro.html">Hỗ Trợ</a></li>
+         </ul>
+      </nav>
+      <div class="auth-buttons">
+         <a href="../accounts/login.html">Đăng nhập</a> 
+         <a href="../accounts/register.html">Đăng ký</a>
+      </div>
+   </div>
+</header>
+
+<section class="hero-small" style="background: url('https://source.unsplash.com/1600x600/?discount,hotel') no-repeat center center/cover;">
+   <div class="hero-overlay"></div>
+   <div class="hero-content">
+      <h2>Khuyến Mãi Đặc Biệt</h2>
+      <p>Những ưu đãi hấp dẫn để bạn có kỳ nghỉ tuyệt vời</p>
+   </div>
+</section>
+
+<main class="content">
+   <div class="slider">
+      <div class="slides">
+         <div class="slide">
+            <img src="https://source.unsplash.com/800x400/?sale,hotel" alt="Khuyến mãi 1">
+            <div class="caption">Giảm 20% cho đặt phòng trực tuyến</div>
+         </div>
+         <div class="slide">
+            <img src="https://source.unsplash.com/800x400/?offer,hotel" alt="Khuyến mãi 2">
+            <div class="caption">Combo du lịch với ưu đãi cực sốc</div>
+         </div>
+         <div class="slide">
+            <img src="https://source.unsplash.com/800x400/?promotion,hotel" alt="Khuyến mãi 3">
+            <div class="caption">Miễn phí bữa sáng cho mỗi đặt phòng</div>
+         </div>
+      </div>
+   </div>
+</main>
+
+<footer class="footer">
+   <div class="container">
+      <p>&copy; 2025 Hotel Family. Hotline: 0123456789.</p>
+   </div>
+</footer>
+<script src="../auth.js"></script>
+</body>
+</html>

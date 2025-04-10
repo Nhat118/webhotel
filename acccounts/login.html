@@ -1,0 +1,46 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Nhập - Hotel Family</title>
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+  <div class="auth-container">
+    <form class="auth-form" id="login-form">
+      <h2>Đăng Nhập</h2>
+      <input type="text" id="login-username" placeholder="Tài khoản" required>
+      <input type="password" id="login-password" placeholder="Mật khẩu" required>
+      <button type="submit">Đăng Nhập</button>
+      <p>Bạn chưa có tài khoản? <a href="register.html">Đăng ký</a></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      let username = document.getElementById('login-username').value;
+      let password = document.getElementById('login-password').value;
+
+      // Lấy danh sách người dùng đã đăng ký
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      // Tìm người dùng có trùng username và mật khẩu
+      let user = users.find(u => u.username === username && u.password === password);
+
+      if (!user) {
+        alert('Sai tài khoản hoặc mật khẩu!');
+        return;
+      }
+
+      // Lưu thông tin người dùng đăng nhập hiện tại
+      localStorage.setItem('currentUser', JSON.stringify(user));
+
+      // Chuyển hướng về trang chủ
+      window.location.href = '../trangchu/index.html';
+    });
+  </script>
+</body>
+</html>
