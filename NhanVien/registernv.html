@@ -1,0 +1,77 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Ký - Hotel Family</title>
+  <link rel="stylesheet" href="../accounts/auth.css">
+</head>
+<body>
+  <div class="auth-container">
+    <form class="auth-form" id="register-form">
+      <h2>Đăng Ký</h2>
+      <input type="text" id="reg-username" placeholder="Tài khoản" required>
+      <input type="password" id="reg-password" placeholder="Mật khẩu" required>
+      <input type="text" id="reg-fullname" placeholder="Họ và tên" required>
+      <input type="date" id="reg-dob" placeholder="Ngày sinh" required>
+      <select id="reg-gender" required>
+        <option value="">Chọn giới tính</option>
+        <option value="Nam">Nam</option>
+        <option value="Nữ">Nữ</option>
+        <option value="Khác">Khác</option>
+      </select>
+      <input type="text" id="reg-cccd" placeholder="CCCD" required>
+      <input type="tel" id="reg-phone" placeholder="Số điện thoại" required>
+      <input type="text" id="reg-nationality" placeholder="Quốc tịch (Nơi sinh)" required>
+      <input type="email" id="reg-email" placeholder="Email" required>
+      <button type="submit">Đăng Ký</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('register-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  let username     = document.getElementById('reg-username').value;
+  let password     = document.getElementById('reg-password').value;
+  let fullname     = document.getElementById('reg-fullname').value;
+  let dob          = document.getElementById('reg-dob').value;
+  let gender       = document.getElementById('reg-gender').value;
+  let cccd         = document.getElementById('reg-cccd').value;
+  let phone        = document.getElementById('reg-phone').value;
+  let nationality  = document.getElementById('reg-nationality').value;
+  let email        = document.getElementById('reg-email').value;
+
+  let newUser = {
+    username,
+    password,
+    fullname,
+    dob,
+    gender,
+    cccd,
+    phone,
+    nationality,
+    email
+  };
+
+  let nhanviens = JSON.parse(localStorage.getItem('nhanviens')) || [];
+
+  let exists = nhanviens.some(nv => nv.username === username);
+  if (exists) {
+    alert('Tài khoản này đã tồn tại!');
+    return;
+  }
+
+  nhanviens.push(newUser);
+  localStorage.setItem('nhanviens', JSON.stringify(nhanviens));
+
+  localStorage.setItem('currentUser', JSON.stringify(newUser));
+
+  alert('Đăng ký nhân viên thành công!');
+  window.location.href = '../trangchu/indexnv.html';
+});
+
+  </script>
+</body>
+</html>

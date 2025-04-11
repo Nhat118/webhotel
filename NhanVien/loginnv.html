@@ -1,0 +1,48 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Nhập - Hotel Family</title>
+  <link rel="stylesheet" href="../accounts/auth.css">
+</head>
+<body>
+  <div class="auth-container">
+    <form class="auth-form" id="login-form">
+      <h2>Đăng Nhập</h2>
+      <input type="text" id="login-username" placeholder="Tài khoản" required>
+      <input type="password" id="login-password" placeholder="Mật khẩu" required>
+      <button type="submit">Đăng Nhập</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  let username = document.getElementById('login-username').value;
+  let password = document.getElementById('login-password').value;
+
+  // Lấy danh sách nhân viên từ localStorage
+  let nhanviens = JSON.parse(localStorage.getItem('nhanviens')) || [];
+
+  // Kiểm tra thông tin đăng nhập
+  let user = nhanviens.find(nv => nv.username === username && nv.password === password);
+
+  if (!user) {
+    alert('Sai tài khoản hoặc mật khẩu!');
+    return;
+  }
+
+  // Lưu người dùng đang đăng nhập
+  localStorage.setItem('currentUser', JSON.stringify(user));
+
+  alert("Đăng nhập thành công!");
+  // Chuyển hướng về trang index nhân viên
+  window.location.href = 'indexnv.html';
+});
+
+  </script>
+</body>
+</html>

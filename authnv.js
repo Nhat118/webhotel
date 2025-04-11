@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
       currentUser.fullname +
       "</a>";
   } else {
-    authSection.innerHTML =
-      '<a href="../accounts/login.html">Đăng nhập</a> <a href="../accounts/register.html">Đăng ký</a>';
+    authSection.innerHTML = '<a href="loginnv.html">Đăng nhập</a> ';
   }
 });
