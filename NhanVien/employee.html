@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Tài khoản - Nhân viên</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      color: #2c3e50;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+    th {
+      background-color: #4facfe;
+      color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    button.edit {
+      background-color: #3498db;
+      color: #fff;
+    }
+    button.edit:hover {
+      background-color: #2980b9;
+    }
+    button.delete {
+      background-color: #e74c3c;
+      color: #fff;
+    }
+    button.delete:hover {
+      background-color: #c0392b;
+    }
+    
+    /* Modal cho chỉnh sửa tài khoản */
+    .modal {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .modal-content input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .modal-content button {
+      margin-top: 10px;
+    }
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Family Nội bộ - Quản lý Tài khoản</title>
+  <link rel="icon" type="image/png" href="../images/download.png">
+  <!-- Link CSS cho giao diện của trang nhân viên -->
+  <link rel="stylesheet" href="employee.css">
+  <!-- Font chữ Poppins và Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+
+
+
+  <script src="../authnv.js"></script>
+</body>
+</html>
+
+  <div class="container">
+    <h1>Quản lý Tài khoản Khách hàng</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Tài khoản</th>
+          <th>Họ &amp; Tên</th>
+          <th>Ngày sinh</th>
+          <th>Giới tính</th>
+          <th>CCCD</th>
+          <th>SĐT</th>
+          <th>Quốc tịch</th>
+          <th>Email</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody id="userTable">
+        <!-- Dữ liệu tài khoản sẽ được chèn bởi JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal chỉnh sửa tài khoản -->
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <span class="modal-close" id="closeModal">&times;</span>
+      <h2>Chỉnh sửa tài khoản</h2>
+      <input type="text" id="editFullname" placeholder="Họ &amp; Tên" required>
+      <input type="date" id="editDob" required>
+      <input type="text" id="editGender" placeholder="Giới tính" required>
+      <input type="text" id="editCccd" placeholder="CCCD" required>
+      <input type="tel" id="editPhone" placeholder="Số điện thoại" required>
+      <input type="text" id="editNationality" placeholder="Quốc tịch" required>
+      <input type="email" id="editEmail" placeholder="Email" required>
+      <button id="saveEditBtn">Lưu thay đổi</button>
+    </div>
+  </div>
+
+  <script>
+    // Hàm load danh sách tài khoản khách hàng từ localStorage (từ mảng "users")
+    function loadCustomerAccounts() {
+      const tableBody = document.getElementById("userTable");
+      tableBody.innerHTML = "";
+      
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      
+      users.forEach(user => {
+        tableBody.innerHTML += `
+          <tr>
+            <td>${user.username}</td>
+            <td>${user.fullname}</td>
+            <td>${user.dob}</td>
+            <td>${user.gender}</td>
+            <td>${user.cccd}</td>
+            <td>${user.phone}</td>
+            <td>${user.nationality}</td>
+            <td>${user.email}</td>
+            <td>
+              <button class="edit" onclick="editUser('${user.username}')">Sửa</button>
+              <button class="delete" onclick="deleteUser('${user.username}')">Xóa</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+    
+    // Gọi hàm loadCustomerAccounts khi DOM đã sẵn sàng
+    document.addEventListener("DOMContentLoaded", loadCustomerAccounts);
+    
+    // Đưa các hàm vào phạm vi toàn cục để có thể gọi từ inline onclick
+    window.editUser = function(username) {
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      let user = users.find(u => u.username === username);
+      if (!user) {
+        alert("Tài khoản không tồn tại!");
+        return;
+      }
+      
+      // Điền thông tin vào form chỉnh sửa
+      document.getElementById("editFullname").value = user.fullname || "";
+      document.getElementById("editDob").value = user.dob || "";
+      document.getElementById("editGender").value = user.gender || "";
+      document.getElementById("editCccd").value = user.cccd || "";
+      document.getElementById("editPhone").value = user.phone || "";
+      document.getElementById("editNationality").value = user.nationality || "";
+      document.getElementById("editEmail").value = user.email || "";
+      
+      // Lưu lại username cần chỉnh sửa vào biến toàn cục
+      window.currentEditUsername = username;
+      
+      // Hiển thị modal chỉnh sửa
+      document.getElementById("editModal").style.display = "flex";
+    };
+    
+    window.deleteUser = function(username) {
+      if (confirm("Bạn có chắc chắn muốn xóa tài khoản này?")) {
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        users = users.filter(u => u.username !== username);
+        localStorage.setItem("users", JSON.stringify(users));
+        loadCustomerAccounts();
+      }
+    };
+    
+    // Xử lý lưu chỉnh sửa tài khoản từ form chỉnh sửa
+    document.getElementById("saveEditBtn").addEventListener("click", function() {
+      const updatedUser = {
+        fullname: document.getElementById("editFullname").value.trim(),
+        dob: document.getElementById("editDob").value,
+        gender: document.getElementById("editGender").value.trim(),
+        cccd: document.getElementById("editCccd").value.trim(),
+        phone: document.getElementById("editPhone").value.trim(),
+        nationality: document.getElementById("editNationality").value.trim(),
+        email: document.getElementById("editEmail").value.trim(),
+      };
+      
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      const index = users.findIndex(u => u.username === window.currentEditUsername);
+      if (index !== -1) {
+        // Cập nhật thông tin của user
+        users[index] = { ...users[index], ...updatedUser };
+        localStorage.setItem("users", JSON.stringify(users));
+        alert("Cập nhật tài khoản thành công!");
+        closeModal();
+        loadCustomerAccounts();
+      }
+    });
+    
+    function closeModal() {
+      document.getElementById("editModal").style.display = "none";
+      window.currentEditUsername = null;
+    }
+    
+    // Đóng modal khi bấm dấu "x"
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+    
+  </script>
+</body>
+</html>

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (currentUser) {
     currentUser = JSON.parse(currentUser);
     authSection.innerHTML =
-      '<a href="../accounts/account.html" class="user-link">' +
+      '<a href="accountnv.html" class="user-link">' +
       currentUser.fullname +
       "</a>";
   } else {
