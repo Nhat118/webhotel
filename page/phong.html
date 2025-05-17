@@ -235,7 +235,10 @@
   <!-- Header (giữ nguyên phần header chung) -->
   <header class="header">
     <div class="container">
-      <div class="logo"><a href="../trangchu/index.html">Hotel Family</a></div>
+      <div class="logo">
+      <img src="../imge/hotel_family_blue.png" alt="Hotel Logo" class="logo-img">
+      <span class="logo-text">Hotel Family</span>
+    </div>
       <nav class="nav">
         <ul class="nav-links">
           <li><a href="../page/phong.html" class="active">Phòng</a></li>
@@ -403,116 +406,163 @@
   <!-- Script xử lý tìm kiếm, đặt phòng, và chuyển hướng nếu chưa đăng nhập -->
   <script>
    document.addEventListener("DOMContentLoaded", function () {
-      // Xử lý tìm kiếm phòng
-      document.getElementById("roomSearchForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        const roomType = document.getElementById("roomTypeInput").value.toLowerCase();
-        const checkin = document.getElementById("checkinInput").value;
-        const checkout = document.getElementById("checkoutInput").value;
-        const guests = parseInt(document.getElementById("guestsInput").value);
-        const cards = document.querySelectorAll("#roomCardsContainer .card");
-        cards.forEach(card => {
-          const title = card.querySelector("h4").textContent.toLowerCase();
-          const maxGuests = parseInt(card.getAttribute("data-maxguests"));
-          const matchesType = roomType ? title.includes(roomType) : true;
-          const matchesGuests = guests ? guests <= maxGuests : true;
-          card.style.display = (matchesType && matchesGuests) ? "" : "none";
-        });
-      });
-
-      // Xử lý hiển thị modal đặt phòng
-      const bookButtons = document.querySelectorAll('.book-btn');
-      const bookingModal = document.getElementById('bookingModal');
-      const modalRoomName = document.getElementById('modal-room-name');
-      const modalClose = bookingModal.querySelector('.modal-close');
-      bookButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-          let currentUser = localStorage.getItem("currentUser");
-          if (!currentUser) {
-            alert("Bạn cần đăng nhập để đặt phòng");
-            window.location.href = "../accounts/login.html";
-            return;
-          }
-          const room = this.getAttribute('data-room');
-          modalRoomName.textContent = room;
-          bookingModal.style.display = 'block';
-        });
-      });
-      // Đóng modal đặt phòng khi bấm dấu X
-      modalClose.addEventListener('click', function() {
-        bookingModal.style.display = 'none';
-      });
-      window.addEventListener('click', function(e) {
-        if (e.target === bookingModal) {
-          bookingModal.style.display = 'none';
-        }
-      });
-
-      // Xử lý đặt phòng (lưu vào lịch sử đặt)
-      document.getElementById('booking-form-modal').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const checkin = document.getElementById('checkin').value;
-        const checkout = document.getElementById('checkout').value;
-        const guests = document.getElementById('guests').value;
-        const customerName = document.getElementById('customer-name').value;
-        const customerPhone = document.getElementById('customer-phone').value;
-        const customerEmail = document.getElementById('customer-email').value;
-        const specialRequest = document.getElementById('special-request').value;
-        const roomName = modalRoomName.textContent;
-        const bookingInfo = {
-          roomName, checkin, checkout, guests,
-          customerName, customerPhone, customerEmail, specialRequest
-        };
-        let bookingHistory = JSON.parse(localStorage.getItem("bookingHistory")) || [];
-        bookingHistory.push(bookingInfo);
-        localStorage.setItem("bookingHistory", JSON.stringify(bookingHistory));
-        alert(`Đặt phòng ${roomName} thành công!\nNgày nhận: ${checkin}\nNgày trả: ${checkout}\nSố khách: ${guests}`);
-        bookingModal.style.display = 'none';
-        e.target.reset();
-      });
-
-      // Xử lý hiển thị modal lịch sử đặt
-      document.getElementById("bookingHistoryBtn").addEventListener("click", function () {
-        let history = JSON.parse(localStorage.getItem("bookingHistory")) || [];
-        const container = document.getElementById("bookingHistoryContent");
-        container.innerHTML = "";
-        if (history.length === 0) {
-          container.innerHTML = "<p>Bạn chưa có lịch sử đặt phòng nào.</p>";
-        } else {
-          history.forEach((booking, index) => {
-            const bookingDiv = document.createElement("div");
-            bookingDiv.style.border = "1px solid #ccc";
-            bookingDiv.style.padding = "10px";
-            bookingDiv.style.marginBottom = "10px";
-            bookingDiv.style.borderRadius = "5px";
-            bookingDiv.innerHTML = `
-              <p><strong>${index + 1}. Phòng:</strong> ${booking.roomName}</p>
-              <p><strong>Ngày nhận:</strong> ${booking.checkin}</p>
-              <p><strong>Ngày trả:</strong> ${booking.checkout}</p>
-              <p><strong>Số khách:</strong> ${booking.guests}</p>
-              <p><strong>Tên:</strong> ${booking.customerName}</p>
-              <p><strong>SĐT:</strong> ${booking.customerPhone}</p>
-              <p><strong>Email:</strong> ${booking.customerEmail}</p>
-              <p><strong>Yêu cầu:</strong> ${booking.specialRequest}</p>
-            `;
-            container.appendChild(bookingDiv);
-          });
-        }
-        document.getElementById("bookingHistoryModal").style.display = "block";
-      });
-      // Đóng modal lịch sử đặt khi bấm dấu "x" hoặc click bên ngoài
-      document.getElementById("bookingHistoryClose").addEventListener("click", function () {
-        document.getElementById("bookingHistoryModal").style.display = "none";
-      });
-      window.addEventListener("click", function (e) {
-        const modalHistory = document.getElementById("bookingHistoryModal");
-        if (e.target === modalHistory) {
-          modalHistory.style.display = "none";
-        }
-      });
+  // Xử lý tìm kiếm phòng
+  document.getElementById("roomSearchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const roomType = document.getElementById("roomTypeInput").value.toLowerCase();
+    const checkin = document.getElementById("checkinInput").value;
+    const checkout = document.getElementById("checkoutInput").value;
+    const guests = parseInt(document.getElementById("guestsInput").value);
+    const cards = document.querySelectorAll("#roomCardsContainer .card");
+    cards.forEach(card => {
+      const title = card.querySelector("h4").textContent.toLowerCase();
+      const maxGuests = parseInt(card.getAttribute("data-maxguests"));
+      const matchesType = roomType ? title.includes(roomType) : true;
+      const matchesGuests = guests ? guests <= maxGuests : true;
+      card.style.display = (matchesType && matchesGuests) ? "" : "none";
     });
+  });
+
+  // Xử lý hiển thị modal đặt phòng
+  const bookButtons = document.querySelectorAll('.book-btn');
+  const bookingModal = document.getElementById('bookingModal');
+  const modalRoomName = document.getElementById('modal-room-name');
+  const modalClose = bookingModal.querySelector('.modal-close');
+
+  bookButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      let currentUser = localStorage.getItem("currentUser");
+      if (!currentUser) {
+        alert("Bạn cần đăng nhập để đặt phòng");
+        window.location.href = "../accounts/login.html";
+        return;
+      }
+      const room = this.getAttribute('data-room');
+      modalRoomName.textContent = room;
+      bookingModal.style.display = 'block';
+    });
+  });
+
+  // Đóng modal đặt phòng khi bấm dấu X
+  modalClose.addEventListener('click', function() {
+    bookingModal.style.display = 'none';
+  });
+  window.addEventListener('click', function(e) {
+    if (e.target === bookingModal) {
+      bookingModal.style.display = 'none';
+    }
+  });
+
+  // Xử lý đặt phòng (lưu vào lịch sử đặt) có kiểm tra trùng thời gian
+  document.getElementById('booking-form-modal').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const checkin = document.getElementById('checkin').value;
+  const checkout = document.getElementById('checkout').value;
+  const guests = document.getElementById('guests').value;
+  const customerName = document.getElementById('customer-name').value;
+  const customerPhone = document.getElementById('customer-phone').value;
+  const customerEmail = document.getElementById('customer-email').value;
+  const specialRequest = document.getElementById('special-request').value;
+  const roomName = modalRoomName.textContent;
+
+  // Chuyển đổi chuỗi ngày thành đối tượng Date
+  const newCheckin = new Date(checkin);
+  const newCheckout = new Date(checkout);
+  
+  // Kiểm tra hợp lệ: ngày nhận phòng phải trước ngày trả phòng
+  if (newCheckin >= newCheckout) {
+    alert("Ngày nhận phòng phải trước ngày trả phòng.");
+    return;
+  }
+  
+  // Lấy lịch sử đặt phòng từ localStorage
+  let bookingHistory = JSON.parse(localStorage.getItem("bookingHistory")) || [];
+  
+  // Kiểm tra xung đột đặt phòng cho cùng phòng
+  let conflict = bookingHistory.some(booking => {
+    if (booking.roomName === roomName) {
+      let existingCheckin = new Date(booking.checkin);
+      let existingCheckout = new Date(booking.checkout);
+      return (newCheckin < existingCheckout && newCheckout > existingCheckin);
+    }
+    return false;
+  });
+  
+  if (conflict) {
+    alert("Phòng đã được đặt trong khoảng thời gian này. Vui lòng chọn thời gian khác!");
+    return;
+  }
+  
+  // Nếu không có xung đột, thêm booking mới vào lịch sử
+  const bookingInfo = {
+    roomName, 
+    checkin, 
+    checkout, 
+    guests,
+    customerName, 
+    customerPhone, 
+    customerEmail, 
+    specialRequest
+  };
+  
+  bookingHistory.push(bookingInfo);
+  localStorage.setItem("bookingHistory", JSON.stringify(bookingHistory));
+  alert(`Đặt phòng ${roomName} thành công!\nNgày nhận: ${checkin}\nNgày trả: ${checkout}\nSố khách: ${guests}`);
+  
+  // Đặt một timeout ngắn để đảm bảo thông báo alert được hiển thị trước khi ẩn modal
+  setTimeout(() => {
+    // Đóng modal và reset form
+    bookingModal.style.display = 'none';
+    document.getElementById('booking-form-modal').reset();
+  }, 200);
+});
+
+
+
+  // Xử lý hiển thị modal lịch sử đặt
+  document.getElementById("bookingHistoryBtn").addEventListener("click", function () {
+    let history = JSON.parse(localStorage.getItem("bookingHistory")) || [];
+    const container = document.getElementById("bookingHistoryContent");
+    container.innerHTML = "";
+    if (history.length === 0) {
+      container.innerHTML = "<p>Bạn chưa có lịch sử đặt phòng nào.</p>";
+    } else {
+      history.forEach((booking, index) => {
+        const bookingDiv = document.createElement("div");
+        bookingDiv.style.border = "1px solid #ccc";
+        bookingDiv.style.padding = "10px";
+        bookingDiv.style.marginBottom = "10px";
+        bookingDiv.style.borderRadius = "5px";
+        bookingDiv.innerHTML = `
+          <p><strong>${index + 1}. Phòng:</strong> ${booking.roomName}</p>
+          <p><strong>Ngày nhận:</strong> ${booking.checkin}</p>
+          <p><strong>Ngày trả:</strong> ${booking.checkout}</p>
+          <p><strong>Số khách:</strong> ${booking.guests}</p>
+          <p><strong>Tên:</strong> ${booking.customerName}</p>
+          <p><strong>SĐT:</strong> ${booking.customerPhone}</p>
+          <p><strong>Email:</strong> ${booking.customerEmail}</p>
+          <p><strong>Yêu cầu:</strong> ${booking.specialRequest}</p>
+        `;
+        container.appendChild(bookingDiv);
+      });
+    }
+    document.getElementById("bookingHistoryModal").style.display = "block";
+  });
+
+  // Đóng modal lịch sử đặt khi bấm dấu "x" hoặc click ra ngoài phần nội dung modal
+  document.getElementById("bookingHistoryClose").addEventListener("click", function () {
+    document.getElementById("bookingHistoryModal").style.display = "none";
+  });
+  window.addEventListener("click", function (e) {
+    const modalHistory = document.getElementById("bookingHistoryModal");
+    if (e.target === modalHistory) {
+      modalHistory.style.display = "none";
+    }
+  });
+});
+
    // xóa lịch sử đặt phòng do test quá nhiều 
-   //localStorage.removeItem("bookingHistory");
+   localStorage.removeItem("bookingHistory");
   </script>
   <script src="../auth.js"></script>
   <!-- Modal Lịch Sử Đặt Phòng -->

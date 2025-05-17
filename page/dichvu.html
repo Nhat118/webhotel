@@ -1,73 +1,390 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Dịch Vụ Của Khách Sạn - Hotel Family</title>
-   <link rel="stylesheet" href="pages.css">
-   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dịch Vụ Của Khách Sạn - Hotel Family</title>
+  <link rel="stylesheet" href="pages.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet"/>
+  <!-- Thay 'your-kit-id' bằng mã kit Font Awesome của bạn nếu cần -->
+  <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+  <style>
+    /* --- Các phần CSS chung --- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      padding-top: 80px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #bookingHistoryBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #4facfe;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      padding: 15px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, background-color 0.3s;
+      z-index: 1000;
+    }
+
+    #bookingHistoryBtn:hover {
+      transform: scale(1.1);
+      background-color: #43e97b;
+    }
+
+    #bookingHistoryModal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    #bookingHistoryModal .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 600px;
+      position: relative;
+    }
+
+    #bookingHistoryModal .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: auto;
+      padding: 20px 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      position: relative;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 15px;
+    }
+
+    .modal-content input,
+    .modal-content textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .modal-content button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .modal-content button:hover {
+      background-color: #0056b3;
+    }
+
+    .close {
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .button-wrapper {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .service-btn {
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .service-btn:hover {
+      background: linear-gradient(to right, #43e97b, #38f9d7);
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
-<header class="header">
-   <div class="container">
-      <div class="logo"><a href="../trangchu/index.html">Hotel Family</a></div>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+      <img src="../imge/hotel_family_blue.png" alt="Hotel Logo" class="logo-img">
+      <span class="logo-text">Hotel Family</span>
+    </div>
       <nav class="nav">
-         <ul class="nav-links">
-            <li><a href="phong.html">Phòng</a></li>
-            <li><a href="dichvu.html" class="active">Dịch Vụ</a></li>
-            <li><a href="khuyenmai.html">Khuyến Mãi</a></li>
-            <li><a href="hotro.html">Hỗ Trợ</a></li>
-         </ul>
+        <ul class="nav-links">
+          <li><a href="phong.html">Phòng</a></li>
+          <li><a href="dichvu.html" class="active">Dịch Vụ</a></li>
+          <li><a href="khuyenmai.html">Khuyến Mãi</a></li>
+          <li><a href="hotro.html">Hỗ Trợ</a></li>
+        </ul>
       </nav>
       <div class="auth-buttons">
-         <a href="../accounts/login.html">Đăng nhập</a> <a href="../accounts/register.html">Đăng ký</a>
+        <a href="../accounts/login.html">Đăng nhập</a>
+        <a href="../accounts/register.html">Đăng ký</a>
       </div>
-   </div>
-</header>
+      <button id="bookingHistoryBtn" title="Lịch sử đặt">
+        <i class="fa-solid fa-history"> Lịch sử đặt dịch vụ</i>
+      </button>
+    </div>
+  </header>
 
-<section class="hero-small" style="background: url('https://i.pinimg.com/736x/82/12/9d/82129df28eab198930dd2111a92e1073.jpg') no-repeat center center/cover;">
-   <div class="hero-overlay"></div>
-   <div class="hero-content">
+  <!-- Hero Section -->
+  <section class="hero-small" style="background: url('https://i.pinimg.com/736x/82/12/9d/82129df28eab198930dd2111a92e1073.jpg') no-repeat center center/cover;">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
       <h2>Dịch Vụ Của Khách Sạn</h2>
       <p>Khám phá các dịch vụ tiện ích hàng đầu tại Hotel Family</p>
-   </div>
-</section>
+    </div>
+  </section>
 
-<main class="content">
-   <section class="cards-section">
-      <h3>Dịch Vụ Nổi Bật</h3>
-      <div class="card-grid">
-         <div class="card">
-            <img src="https://easysalon.vn/wp-content/uploads/2021/07/cach-chup-anh-dich-vu-spa-1.jpg" alt="Dịch Vụ Spa">
-            <div class="card-info">
-               <h4>Dịch Vụ Spa</h4>
-               <p>Thư giãn với các liệu pháp spa chuyên nghiệp tại khách sạn.</p>
-            </div>
-         </div>
-         <div class="card">
-            <img src="https://posapp.vn/wp-content/uploads/2018/03/khu-vuc-an-uong.png" alt="Nhà Hàng Cao Cấp">
-            <div class="card-info">
-               <h4>Nhà Hàng Cao Cấp</h4>
-               <p>Thưởng thức ẩm thực đa dạng với các món ăn đặc sắc.</p>
-            </div>
-         </div>
-         <div class="card">
-            <img src="https://thethaodonga.com/wp-content/uploads/2022/06/hinh-anh-be-boi-1.jpg" alt="Hồ Bơi">
-            <div class="card-info">
-               <h4>Hồ Bơi</h4>
-               <p>Thư giãn tại hồ bơi ngoài trời với không gian thoáng đãng.</p>
-            </div>
-         </div>
-         <!-- Thêm dịch vụ nếu cần -->
+  <!-- Phần tìm kiếm dịch vụ -->
+  <section class="services" style="padding: 40px 20px; text-align: center; background: #fff;">
+     <!--chúng ta cho vào 1 div để xếp input và button cạnh nhau -->
+<div style="display: flex; justify-content: center; gap: 10px; margin: 20px auto;">
+  <input
+    type="text"
+    id="searchService"
+    placeholder="Tìm kiếm dịch vụ..."
+    style="padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #ccc;"
+  />
+  <button
+    id="searchServiceBtn"
+    style="padding: 10px 16px; background-color: #ffc107; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;"
+  >
+    Tìm
+  </button>
+</div>
+
+    <div class="service-list" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+      
+      <div class="service-card" style="border: 1px solid #eee; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <img src="https://easysalon.vn/wp-content/uploads/2021/07/cach-chup-anh-dich-vu-spa-1.jpg" alt="Spa" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;">
+        <h4 class="service-name" style="margin: 10px 0;">Spa thư giãn</h4>
+        <p style="color: #555;">Trải nghiệm spa cao cấp để thư giãn.</p>
+        <div class="button-wrapper">
+          <button class="service-btn" data-service="Spa">Đặt Dịch Vụ</button>
+        </div>
       </div>
-   </section>
-</main>
+      
+      <div class="service-card" style="border: 1px solid #eee; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <img src="https://posapp.vn/wp-content/uploads/2018/03/khu-vuc-an-uong.png" alt="Massage" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;">
+        <h4 class="service-name" style="margin: 10px 0;">Massage truyền thống</h4>
+        <p style="color: #555;">Giúp giảm căng thẳng và thư giãn cơ thể.</p>
+        <div class="button-wrapper">
+          <button class="service-btn" data-service="Massage">Đặt Dịch Vụ</button>
+        </div>
+      </div>
+      
+      <div class="service-card" style="border: 1px solid #eee; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <img src="https://thethaodonga.com/wp-content/uploads/2022/06/hinh-anh-be-boi-1.jpg" alt="Hồ Bơi" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;">
+        <h4 class="service-name" style="margin: 10px 0;">Hồ bơi</h4>
+        <p style="color: #555;">Thư giãn tại hồ bơi ngoài trời với không gian thoáng đãng.</p>
+        <div class="button-wrapper">
+          <button class="service-btn" data-service="Hồ bơi">Đặt Dịch Vụ</button>
+        </div>
+      </div>
+      
+    </div>
+  </section>
 
-<footer class="footer">
-   <div class="container">
+  <!-- Modal đặt dịch vụ -->  
+  <div id="serviceModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeServiceModal">&times;</span>
+      <h3>Đặt Dịch Vụ</h3>
+      <form id="serviceBookingForm">
+        <!-- Tự động điền tên dịch vụ từ card khi nhấn nút Đặt Dịch Vụ, sử dụng trường này dưới dạng readonly --> 
+        <input type="hidden" id="serviceType">
+        <input type="text" id="serviceNameInput" placeholder="Tên dịch vụ" readonly style="background-color: #eee; margin-bottom: 10px;">
+        <input type="text" id="customerName" placeholder="Tên khách hàng" required>
+        <input type="tel" id="servicePhone" placeholder="Số điện thoại" required>
+        <textarea id="serviceNote" rows="4" placeholder="Ghi chú (nếu có)"></textarea>
+        <button type="submit">Xác nhận đặt dịch vụ</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal lịch sử đặt dịch vụ -->  
+  <div id="bookingHistoryModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" id="bookingHistoryClose">&times;</span>
+      <h3>Lịch sử đặt dịch vụ</h3>
+      <div id="bookingHistoryContent"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
       <p>&copy; 2025 Hotel Family. Hotline: 0123456789.</p>
-   </div>
-</footer>
-<script src="../auth.js"></script>
+    </div>
+  </footer>
+
+  <script>
+    // --- Tìm kiếm dịch vụ --- 
+    document.getElementById('searchService').addEventListener('input', function () {
+      const keyword = this.value.toLowerCase();
+      const cards = document.querySelectorAll('.service-card');
+      cards.forEach(card => {
+        const name = card.querySelector('.service-name').textContent.toLowerCase();
+        card.style.display = name.includes(keyword) ? 'block' : 'none';
+      });
+    });
+
+    // --- Xử lý modal đặt dịch vụ --- 
+    const serviceModal = document.getElementById("serviceModal");
+    const closeServiceModal = document.getElementById("closeServiceModal");
+
+    // Khi nhấn nút "Đặt Dịch Vụ" ở từng card, tự động lấy tên dịch vụ từ thẻ .service-name
+    document.querySelectorAll(".service-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const card = btn.closest('.service-card');
+        const service = card.querySelector('.service-name').textContent;
+        // Lưu tên dịch vụ vào trường hidden và hiển thị vào input readonly
+        document.getElementById("serviceType").value = service;
+        document.getElementById("serviceNameInput").value = service;
+        serviceModal.style.display = "block";
+      });
+    });
+
+    closeServiceModal.addEventListener("click", () => serviceModal.style.display = "none");
+    window.addEventListener("click", e => {
+      if (e.target === serviceModal) serviceModal.style.display = "none";
+    });
+    // tìm dịch vụ 
+    function filterService() {
+    const keyword = document.getElementById("searchService").value.toLowerCase();
+    const cards = document.querySelectorAll(".service-card");
+    cards.forEach(card => {
+      const name = card.querySelector(".service-name").textContent.toLowerCase();
+      card.style.display = name.includes(keyword) ? "block" : "none";
+    });
+  }
+
+  document.getElementById("searchService").addEventListener("input", filterService);
+  document.getElementById("searchServiceBtn").addEventListener("click", filterService);
+    // --- Xử lý submit form đặt dịch vụ --- 
+    document.getElementById("serviceBookingForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const serviceType = document.getElementById("serviceType").value;  
+      const serviceName = document.getElementById("serviceNameInput").value.trim();
+      const customerName = document.getElementById("customerName").value.trim();
+      const servicePhone = document.getElementById("servicePhone").value.trim();
+      const serviceNote = document.getElementById("serviceNote").value.trim();
+
+      // Kiểm tra xem khách đã đặt phòng chưa (theo bookingHistory, giả sử thông tin đặt phòng có lưu SĐT của khách trong trường customerPhone)
+      const bookingHistory = JSON.parse(localStorage.getItem("bookingHistory")) || [];
+      const isBooked = bookingHistory.some(b => b.customerPhone.trim().toLowerCase() === servicePhone.toLowerCase());
+
+      if (!isBooked) {
+        alert("Quý khách chưa đặt phòng. Vui lòng đặt phòng trước khi sử dụng dịch vụ.");
+        return;
+      }
+
+      const serviceHistory = JSON.parse(localStorage.getItem("serviceHistory")) || [];
+serviceHistory.push({
+  serviceType: serviceType,
+  serviceName: serviceName,
+  customerName: customerName,
+  servicePhone: servicePhone,
+  serviceNote: serviceNote,
+  date: new Date().toISOString()
+});
+localStorage.setItem("serviceHistory", JSON.stringify(serviceHistory));
+
+
+      alert("Đặt dịch vụ thành công!");
+      this.reset();
+      serviceModal.style.display = "none";
+    });
+
+    // --- Xử lý modal lịch sử đặt dịch vụ --- 
+    const bookingHistoryBtn = document.getElementById("bookingHistoryBtn");
+    const bookingHistoryModal = document.getElementById("bookingHistoryModal");
+    const bookingHistoryClose = document.getElementById("bookingHistoryClose");
+
+    bookingHistoryBtn.addEventListener("click", () => {
+      const history = JSON.parse(localStorage.getItem("serviceHistory")) || [];
+      const container = document.getElementById("bookingHistoryContent");
+      container.innerHTML = "";
+
+      if (history.length === 0) {
+        container.innerHTML = "<p>Bạn chưa có lịch sử đặt dịch vụ nào.</p>";
+      } else {
+        history.forEach((item, index) => {
+          const div = document.createElement("div");
+          div.style.border = "1px solid #ccc";
+          div.style.padding = "10px";
+          div.style.marginBottom = "10px";
+          div.style.borderRadius = "5px";
+          div.innerHTML = `
+            <p><strong>${index + 1}. Dịch vụ:</strong> ${item.serviceType}</p>
+            <p><strong>Tên khách:</strong> ${item.serviceName}</p>
+            <p><strong>Khách hàng:</strong> ${item.customerName}</p>
+            <p><strong>SĐT:</strong> ${item.servicePhone}</p>
+            <p><strong>Ghi chú:</strong> ${item.serviceNote || "Không có"}</p>
+            <p><strong>Thời gian đặt:</strong> ${new Date(item.date).toLocaleString()}</p>
+          `;
+          container.appendChild(div);
+        });
+      }
+
+      bookingHistoryModal.style.display = "block";
+    });
+
+    bookingHistoryClose.addEventListener("click", () => bookingHistoryModal.style.display = "none");
+    window.addEventListener("click", e => {
+      if (e.target === bookingHistoryModal) bookingHistoryModal.style.display = "none";
+    });
+     // xóa lịch sử đặt phòng do test quá nhiều 
+     //localStorage.removeItem("serviceHistory");
+
+  </script>
+
+  <script src="../auth.js"></script>
 </body>
 </html>

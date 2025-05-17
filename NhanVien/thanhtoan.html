@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Toán - Luxury Hotel</title>
+    <link rel="icon" type="image/png" href="images/download.png">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="thanhtoan.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+ 
+    
+    <script src="scripts/DangNhap.js"></script>
+
+    <div class="container">
+        <div class="payment-section">
+            <h2 class="section-title">Thanh Toán</h2>
+            
+            <!-- Nút xem lịch sử thanh toán -->
+            <div class="history-button">
+                <button class="history-btn" onclick="showPaymentHistory()">
+                    <i class="fas fa-history"></i> Xem lịch sử thanh toán
+                </button>
+            </div>
+
+            <!-- Phần chọn phòng -->
+            <div class="room-selection">
+                <label for="roomNumber">Chọn phòng:</label>
+                <select id="roomNumber" onchange="loadRoomDetails()">
+                    <option value="">-- Chọn số phòng --</option>
+                </select>
+            </div>
+
+            <!-- Chi tiết hóa đơn -->
+            <div class="bill-details">
+                <h3>Chi tiết hóa đơn</h3>
+                <div class="bill-item">
+                    <span>Tiền phòng:</span>
+                    <span id="roomCharge">0 VNĐ</span>
+                </div>
+                <div id="servicesList">
+                    <!-- Dịch vụ sẽ được thêm bằng JavaScript -->
+                </div>
+                <div class="bill-total">
+                    <span>Tổng cộng:</span>
+                    <span id="totalAmount">0 VNĐ</span>
+                </div>
+                <button class="payment-btn" onclick="processPayment()">
+                    <i class="fas fa-credit-card"></i> Thanh toán
+                </button>
+            </div>
+
+            <!-- Báo cáo doanh thu -->
+            <div class="revenue-report">
+                <h3>Báo cáo doanh thu</h3>
+                <div class="date-range">
+                    <div class="date-input">
+                        <label for="startDate">Từ ngày:</label>
+                        <input type="date" id="startDate">
+                    </div>
+                    <div class="date-input">
+                        <label for="endDate">Đến ngày:</label>
+                        <input type="date" id="endDate">
+                    </div>
+                </div>
+                <button class="report-btn" onclick="generateReport()">
+                    <i class="fas fa-file-export"></i> Tạo báo cáo
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal lịch sử thanh toán -->
+        <div id="historyModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Lịch sử thanh toán</h2>
+                    <span class="close-history">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="history-filters">
+                        <input type="text" id="searchInput" placeholder="Tìm kiếm theo số phòng...">
+                        <select id="sortSelect">
+                            <option value="date-desc">Mới nhất trước</option>
+                            <option value="date-asc">Cũ nhất trước</option>
+                            <option value="amount-desc">Giá trị cao nhất</option>
+                            <option value="amount-asc">Giá trị thấp nhất</option>
+                        </select>
+                    </div>
+                    <div class="history-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ngày thanh toán</th>
+                                    <th>Số phòng</th>
+                                    <th>Tiền phòng</th>
+                                    <th>Tiền dịch vụ</th>
+                                    <th>Tổng cộng</th>
+                                    <th>Chi tiết</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thêm modal chi tiết vào cuối file, trước đóng thẻ container -->
+        <div id="detailModal" class="modal">
+            <div class="modal-content detail-modal">
+                <div class="modal-header">
+                    <h2>Chi tiết hóa đơn</h2>
+                    <span class="close-detail">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="detail-info">
+                        <div class="detail-row">
+                            <span class="detail-label">Số phòng:</span>
+                            <span id="detailRoomNumber"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Ngày thanh toán:</span>
+                            <span id="detailPaymentDate"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Check-in:</span>
+                            <span id="detailCheckIn"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Check-out:</span>
+                            <span id="detailCheckOut"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Tiền phòng:</span>
+                            <span id="detailRoomCharge"></span>
+                        </div>
+                        <div class="detail-services">
+                            <h3>Dịch vụ đã sử dụng</h3>
+                            <div id="detailServicesList"></div>
+                        </div>
+                        <div class="detail-row total">
+                            <span class="detail-label">Tổng cộng:</span>
+                            <span id="detailTotal"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="thanhtoan.js"></script>
+</body>
+</html>

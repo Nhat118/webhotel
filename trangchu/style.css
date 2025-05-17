@@ -32,10 +32,28 @@
   }
   
   .logo {
-    font-size: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* khoảng cách giữa ảnh và chữ */
+}
+
+.logo-img {
+  height: 40px;         /* kích thước ảnh */
+  width: 40px;          /* để đảm bảo ảnh là hình tròn */
+  border-radius: 50%;   /* bo tròn */
+  object-fit: cover;    /* cắt ảnh vừa khít mà không bị méo */
+}
+
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0D6EFD; /* hoặc màu bạn thích */
+  font-size: 28px;
     font-weight: 700;
     color: white;
-  }
+}
+
   
   .nav {
     flex: 1;

@@ -1,0 +1,126 @@
+/* employee.css */
+
+/* Định dạng chung cho trang */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  /* Định dạng container chứa nội dung */
+  .container {
+    max-width: 1000px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Tiêu đề chính */
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    color: #2c3e50;
+  }
+  
+  /* Định dạng bảng */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #4facfe;
+    color: #fff;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* Định dạng cho các nút chỉnh sửa và xoá */
+  button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  
+  button.edit {
+    background-color: #3498db;
+    color: #fff;
+  }
+  
+  button.edit:hover {
+    background-color: #2980b9;
+  }
+  
+  button.delete {
+    background-color: #e74c3c;
+    color: #fff;
+  }
+  
+  button.delete:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Modal chỉnh sửa tài khoản */
+  .modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+  
+  .modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .modal-content button {
+    margin-top: 10px;
+  }
+  
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+  }
+  

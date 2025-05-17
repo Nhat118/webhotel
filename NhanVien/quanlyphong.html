@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Booking - Employee</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      color: #2c3e50;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+    th {
+      background-color: #4facfe;
+      color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    button.edit {
+      background-color: #3498db;
+      color: #fff;
+    }
+    button.edit:hover {
+      background-color: #2980b9;
+    }
+    button.delete {
+      background-color: #e74c3c;
+      color: #fff;
+    }
+    button.delete:hover {
+      background-color: #c0392b;
+    }
+    /* Modal cho chỉnh sửa booking */
+    .modal {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #333;
+    }
+    .modal-content input,
+    .modal-content textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .modal-content button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Lịch sử đặt phòng</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Phòng</th>
+          <th>Ngày nhận</th>
+          <th>Ngày trả</th>
+          <th>Số khách</th>
+          <th>Tên</th>
+          <th>SĐT</th>
+          <th>Email</th>
+          <th>Yêu cầu</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody id="bookingTable">
+        <!-- Các booking sẽ được load vào đây bởi JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal chỉnh sửa booking -->
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <span class="modal-close" id="closeModal">&times;</span>
+      <h2>Chỉnh sửa Booking</h2>
+      <!-- Các trường chỉnh sửa (không sửa được roomName nếu muốn giữ nguyên phòng đã đặt) -->
+      <input type="text" id="editCheckin" placeholder="Ngày nhận" required>
+      <input type="text" id="editCheckout" placeholder="Ngày trả" required>
+      <input type="number" id="editGuests" placeholder="Số khách" required>
+      <input type="text" id="editCustomerName" placeholder="Tên khách hàng" required>
+      <input type="tel" id="editCustomerPhone" placeholder="SĐT" required>
+      <input type="email" id="editCustomerEmail" placeholder="Email" required>
+      <textarea id="editSpecialRequest" rows="3" placeholder="Yêu cầu đặc biệt"></textarea>
+      <button id="saveEditBtn">Lưu thay đổi</button>
+    </div>
+  </div>
+
+  <script>
+    // Biến toàn cục để lưu chỉ số booking đang được chỉnh sửa
+    let currentEditIndex = null;
+
+    // Hàm load tất cả booking từ localStorage
+    function loadBookingHistory() {
+      const tableBody = document.getElementById("bookingTable");
+      tableBody.innerHTML = "";
+      let bookingHistory = JSON.parse(localStorage.getItem("bookingHistory")) || [];
+      bookingHistory.forEach((booking, index) => {
+        tableBody.innerHTML += `
+          <tr>
+            <td>${booking.roomName}</td>
+            <td>${booking.checkin}</td>
+            <td>${booking.checkout}</td>
+            <td>${booking.guests}</td>
+            <td>${booking.customerName}</td>
+            <td>${booking.customerPhone}</td>
+            <td>${booking.customerEmail}</td>
+            <td>${booking.specialRequest}</td>
+            <td>
+              <button class="edit" onclick="editBooking(${index})">Sửa</button>
+              <button class="delete" onclick="deleteBooking(${index})">Xóa</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // Hàm chỉnh sửa booking: hiển thị modal và điền dữ liệu
+    function editBooking(index) {
+      let bookingHistory = JSON.parse(localStorage.getItem("bookingHistory")) || [];
+      currentEditIndex = index;
+      const booking = bookingHistory[index];
+      // Gán giá trị vào các ô input của modal
+      document.getElementById("editCheckin").value = booking.checkin;
+      document.getElementById("editCheckout").value = booking.checkout;
+      document.getElementById("editGuests").value = booking.guests;
+      document.getElementById("editCustomerName").value = booking.customerName;
+      document.getElementById("editCustomerPhone").value = booking.customerPhone;
+      document.getElementById("editCustomerEmail").value = booking.customerEmail;
+      document.getElementById("editSpecialRequest").value = booking.specialRequest;
+      document.getElementById("editModal").style.display = "flex";
+    }
+
+    // Hàm lưu thay đổi từ modal chỉnh sửa
+    document.getElementById("saveEditBtn").addEventListener("click", function() {
+      let bookingHistory = JSON.parse(localStorage.getItem("bookingHistory")) || [];
+      if (currentEditIndex === null) return;
+      // Lấy giá trị mới từ modal
+      const editedBooking = {
+        ...bookingHistory[currentEditIndex],
+        checkin: document.getElementById("editCheckin").value,
+        checkout: document.getElementById("editCheckout").value,
+        guests: document.getElementById("editGuests").value,
+        customerName: document.getElementById("editCustomerName").value,
+        customerPhone: document.getElementById("editCustomerPhone").value,
+        customerEmail: document.getElementById("editCustomerEmail").value,
+        specialRequest: document.getElementById("editSpecialRequest").value
+      };
+      // Cập nhật lại mảng booking
+      bookingHistory[currentEditIndex] = editedBooking;
+      localStorage.setItem("bookingHistory", JSON.stringify(bookingHistory));
+      alert("Cập nhật booking thành công!");
+      closeModal();
+      loadBookingHistory();
+    });
+
+    // Hàm xóa booking
+    function deleteBooking(index) {
+      if (confirm("Bạn có chắc chắn muốn xóa booking này?")) {
+        let bookingHistory = JSON.parse(localStorage.getItem("bookingHistory")) || [];
+        bookingHistory.splice(index, 1);
+        localStorage.setItem("bookingHistory", JSON.stringify(bookingHistory));
+        loadBookingHistory();
+      }
+    }
+
+    // Hàm đóng modal chỉnh sửa
+    function closeModal() {
+      document.getElementById("editModal").style.display = "none";
+      currentEditIndex = null;
+    }
+
+    // Sự kiện đóng modal khi click dấu "x"
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+    // Sự kiện đóng modal khi click ra bên ngoài modal-content
+    window.addEventListener("click", function(e) {
+      const modal = document.getElementById("editModal");
+      if (e.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+
+    // Load booking khi DOM sẵn sàng
+    document.addEventListener("DOMContentLoaded", loadBookingHistory);
+  </script>
+</body>
+</html>
